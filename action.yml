@@ -1,0 +1,79 @@
+inputs:
+  repository:
+    description: Gopass store repository
+    required: true
+  private-key:
+    description: Gopass private key 
+    required: true
+  private-key-passphrase:
+    description: Gopass private key passphrase
+    required: true
+  store-name:
+    description: Gopass store name
+    required: false
+  ref:
+    description: Gopass store ref
+    required: false
+    default: 'main'
+  token:
+    description: GitHub token used for cloning the gopass repository
+    required: false
+  ssh-key:
+    description: SSH key used for cloning the gopass repository
+    required: false
+outputs:
+  store-name:
+    description: Gopass store name
+    value: ${{ inputs.store-name || inputs.repository }}
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout Gopass Store
+      uses: actions/checkout@v4
+      with: 
+        repository: ${{ inputs.repository }}
+        ref: ${{ inputs.ref }}
+        ssh-key: ${{ inputs.ssh-key || null }}
+        token: ${{ inputs.token || null }}
+        path: ${{ inputs.store-name || inputs.repository }}
+
+    - name: Install Gopass
+      uses: mauhlik/setup-gopass@v1.1.0
+      with:
+        version: 'v1.15.15'
+        provider-install: 'true'
+        provider-version: 'v1.15.15'
+
+    - name: Setup Gopass
+      shell: bash
+      run: |
+        gopass config core.autosync false
+
+    - name: Decode and Import GPG Key
+      shell: bash
+      run: |
+        gpg_private_key_asc=$(mktemp)
+        echo "$PRIVATE_KEY" | base64 --decode > "$gpg_private_key_asc"
+        echo "$PRIVATE_KEY_PASSPHRASE" | gpg --batch --passphrase-fd 0 --passphrase "$PRIVATE_KEY_PASSPHRASE" --quiet --import "$gpg_private_key_asc"
+        gpg --list-keys
+        if [ ! -f "${STORE_NAME}/.internal/test.gpg" ]; then
+          echo "::error::Secret used for testing ${STORE_NAME}/.internal/test does not exist"
+          exit 1
+        fi
+        gpg -d --pinentry-mode=loopback --passphrase "${PRIVATE_KEY_PASSPHRASE}" "${STORE_NAME}/.internal/test.gpg"
+      env:
+        PRIVATE_KEY: ${{ inputs.private-key }}
+        PRIVATE_KEY_PASSPHRASE: ${{ inputs.private-key-passphrase }}
+        STORE_NAME: ${{ inputs.store-name || inputs.repository }}
+
+    - name: Mount Gopass Store
+      shell: bash
+      run: |
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "gopass-github-actions"
+        STORE_LOCATION=$(realpath "$STORE_NAME")
+        echo "github-actions@github.com" | gopass init 
+        gopass mounts add "${STORE_NAME}" "${STORE_LOCATION}"
+        gopass sync
+      env:
+        STORE_NAME: ${{ inputs.store-name || inputs.repository }}
