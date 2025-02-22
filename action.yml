@@ -50,7 +50,7 @@ runs:
       run: |
         gpg_private_key_asc=$(mktemp)
         echo "$PRIVATE_KEY" | base64 --decode > "$gpg_private_key_asc"
-        echo "$PRIVATE_KEY_PASSPHRASE" | gpg --batch --passphrase-fd 0 --passphrase "$PRIVATE_KEY_PASSPHRASE" --q
+        echo "$PRIVATE_KEY_PASSPHRASE" | gpg --batch --passphrase-fd 0 --passphrase "$PRIVATE_KEY_PASSPHRASE" --quiet --import "$gpg_private_key_asc"
       env:
         PRIVATE_KEY: ${{ inputs.private-key }}
         PRIVATE_KEY_PASSPHRASE: ${{ inputs.private-key-passphrase }}
