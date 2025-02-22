@@ -1,0 +1,65 @@
+inputs:
+  repository:
+    description: Gopass store repository
+    required: true
+  private-key:
+    description: Gopass private key 
+    required: true
+  private-key-passphrase:
+    description: Gopass private key passphrase
+    required: true
+  store-name:
+    description: Gopass store name
+    required: false
+  ref:
+    description: Gopass store ref
+    required: false
+    default: 'main'
+  token:
+    description: GitHub token used for cloning the gopass repository
+    required: false
+  ssh-key:
+    description: SSH key used for cloning the gopass repository
+    required: false
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout Gopass Store
+      uses: actions/checkout@v4
+      with: 
+        repository: ${{ inputs.repository }}
+        ref: ${{ inputs.ref }}
+        ssh-key: ${{ inputs.ssh-key || null }}
+        token: ${{ inputs.token || null }}
+        path: ${{ inputs.store-name || inputs.repository }}
+
+    - name: Install Gopass
+      uses: mauhlik/setup-gopass@v1.0.1
+      with:
+        version: 'v1.15.15'
+        provider-install: 'true'
+        provider-version: 'v1.15.15'
+
+    - name: Setup Gopass
+      shell: bash
+      run: |
+        gopass config core.autosync false
+
+    - name: Decode and Import GPG Key
+      shell: bash
+      run: |
+        gpg_private_key_asc=$(mktemp)
+        echo "$PRIVATE_KEY" | base64 --decode > "$gpg_private_key_asc"
+        echo "$PRIVATE_KEY_PASSPHRASE" | gpg --batch --passphrase-fd 0 --passphrase "$PRIVATE_KEY_PASSPHRASE" --q
+      env:
+        PRIVATE_KEY: ${{ inputs.private-key }}
+        PRIVATE_KEY_PASSPHRASE: ${{ inputs.private-key-passphrase }}
+
+    - name: Mount Gopass Store
+      shell: bash
+      run: |
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "gopass-github-actions"
+        gopass mounts add "$STORE_NAME" $(realpath "$STORE_NAME")
+      env:
+        STORE_NAME: ${{ inputs.store-name || inputs.repository }}
