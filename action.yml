@@ -21,6 +21,10 @@ inputs:
   ssh-key:
     description: SSH key used for cloning the gopass repository
     required: false
+outputs:
+  store-name:
+    description: Gopass store name
+    value: ${{ inputs.store-name || inputs.repository }}
 runs:
   using: 'composite'
   steps:
@@ -51,15 +55,25 @@ runs:
         gpg_private_key_asc=$(mktemp)
         echo "$PRIVATE_KEY" | base64 --decode > "$gpg_private_key_asc"
         echo "$PRIVATE_KEY_PASSPHRASE" | gpg --batch --passphrase-fd 0 --passphrase "$PRIVATE_KEY_PASSPHRASE" --quiet --import "$gpg_private_key_asc"
+        gpg --list-keys
+        if [ ! -f "${STORE_NAME}/.internal/test.gpg" ]; then
+          echo "::error::Secret used for testing ${STORE_NAME}/.internal/test does not exist"
+          exit 1
+        fi
+        gpg -d --pinentry-mode=loopback --passphrase "${PRIVATE_KEY_PASSPHRASE}" "${STORE_NAME}/.internal/test.gpg"
       env:
         PRIVATE_KEY: ${{ inputs.private-key }}
         PRIVATE_KEY_PASSPHRASE: ${{ inputs.private-key-passphrase }}
+        STORE_NAME: ${{ inputs.store-name || inputs.repository }}
 
     - name: Mount Gopass Store
       shell: bash
       run: |
         git config --global user.email "github-actions@github.com"
         git config --global user.name "gopass-github-actions"
-        gopass mounts add "$STORE_NAME" $(realpath "$STORE_NAME")
+        STORE_LOCATION=$(realpath "$STORE_NAME")
+        echo "github-actions@github.com" | gopass init 
+        gopass mounts add "${STORE_NAME}" "${STORE_LOCATION}"
+        gopass sync
       env:
         STORE_NAME: ${{ inputs.store-name || inputs.repository }}
