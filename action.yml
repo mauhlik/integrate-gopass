@@ -18,6 +18,7 @@ inputs:
   token:
     description: GitHub token used for cloning the gopass repository
     required: false
+    default: ${{ github.token }}
   ssh-key:
     description: SSH key used for cloning the gopass repository
     required: false
