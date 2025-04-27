@@ -51,8 +51,8 @@ jobs:
         uses: ./
         with:
           repository: "mauhlik/gopass-store-test"
-          private-key: ${{ secrets.GOPASS_PRIVATE_KEY }}
-          private-key-passphrase: ${{ secrets.GOPASS_PRIVATE_KEY_PASSPHRASE }}
+          private-key: ${{ secrets.INFRASTRUCTURE_GOPASS_PRIVATE_KEY }}
+          private-key-passphrase: ${{ secrets.INFRASTRUCTURE_GOPASS_PRIVATE_KEY_PASSPHRASE }}
           store-name: "custom-store-name"
           token: ${{ secrets.GOPASS_STORE_CHECKOUT_TOKEN }}
 
@@ -80,8 +80,8 @@ jobs:
         uses: ./
         with:
           repository: "mauhlik/gopass-store-test"
-          private-key: ${{ secrets.GOPASS_PRIVATE_KEY }}
-          private-key-passphrase: ${{ secrets.GOPASS_PRIVATE_KEY_PASSPHRASE }}
+          private-key: ${{ secrets.INFRASTRUCTURE_GOPASS_PRIVATE_KEY }}
+          private-key-passphrase: ${{ secrets.INFRASTRUCTURE_GOPASS_PRIVATE_KEY_PASSPHRASE }}
           store-name: "gopass-store-test"
           token: ${{ secrets.GOPASS_STORE_CHECKOUT_TOKEN }}
 
