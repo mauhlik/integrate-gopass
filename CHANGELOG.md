@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/mauhlik/integrate-gopass/compare/v1.0.1...v1.0.2) (2025-04-27)
+
+
+### Bug Fixes
+
+* set default gh token ([#9](https://github.com/mauhlik/integrate-gopass/issues/9)) ([4f72ff3](https://github.com/mauhlik/integrate-gopass/commit/4f72ff3730ef45c8160c31f92a68439a5dc46648))
+
 ## [1.0.1](https://github.com/mauhlik/integrate-gopass/compare/v1.0.0...v1.0.1) (2025-04-27)
 
 
