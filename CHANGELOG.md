@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/mauhlik/integrate-gopass/compare/v1.0.2...v1.1.0) (2025-04-28)
+
+
+### Features
+
+* Update mauhlik/setup-gopass action to v1.2.0 ([#11](https://github.com/mauhlik/integrate-gopass/issues/11)) ([ed13114](https://github.com/mauhlik/integrate-gopass/commit/ed13114bd80810ed8153b896e30a60877bdced8e))
+
 ## [1.0.2](https://github.com/mauhlik/integrate-gopass/compare/v1.0.1...v1.0.2) (2025-04-27)
 
 
