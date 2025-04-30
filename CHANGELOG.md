@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/mauhlik/integrate-gopass/compare/v1.1.0...v1.2.0) (2025-04-30)
+
+
+### Features
+
+* specify provider-download-url ([#13](https://github.com/mauhlik/integrate-gopass/issues/13)) ([24204c0](https://github.com/mauhlik/integrate-gopass/commit/24204c06e2e4e5ce16dcc80d83ba545ab9c4648e))
+
 ## [1.1.0](https://github.com/mauhlik/integrate-gopass/compare/v1.0.2...v1.1.0) (2025-04-28)
 
 
