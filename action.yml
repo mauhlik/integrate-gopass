@@ -39,7 +39,7 @@ runs:
         path: ${{ inputs.store-name || inputs.repository }}
 
     - name: Install Gopass
-      uses: mauhlik/setup-gopass@v1.2.0
+      uses: mauhlik/setup-gopass@v1.2.1
       with:
         version: 'v1.15.15'
         provider-install: 'true'
