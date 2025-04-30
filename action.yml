@@ -44,6 +44,7 @@ runs:
         version: 'v1.15.15'
         provider-install: 'true'
         provider-version: 'v1.15.15'
+        provider-download-url: https://github.com/mauhlik/gopass-summon-provider/releases/download
 
     - name: Setup Gopass
       shell: bash
