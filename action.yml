@@ -41,9 +41,9 @@ runs:
     - name: Install Gopass
       uses: mauhlik/setup-gopass@v1.2.1
       with:
-        version: 'v1.15.15'
+        version: 'v1.15.16'
         provider-install: 'true'
-        provider-version: 'v1.15.15'
+        provider-version: 'v1.15.16'
         provider-download-url: https://github.com/mauhlik/gopass-summon-provider/releases/download
 
     - name: Setup Gopass
