@@ -16,7 +16,7 @@ jobs:
     name: GitHub Actions Test
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Test Local Action
         id: test-action
@@ -44,7 +44,7 @@ jobs:
     name: GitHub Actions Test
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Test Local Action
         id: test-action
@@ -73,7 +73,7 @@ jobs:
     name: GitHub Actions Test
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Test Local Action
         id: test-action
