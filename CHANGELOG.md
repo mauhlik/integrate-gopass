@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/mauhlik/integrate-gopass/compare/v1.2.0...v1.3.0) (2025-08-12)
+
+
+### Features
+
+* Update actions/checkout action to v5 ([#15](https://github.com/mauhlik/integrate-gopass/issues/15)) ([4538467](https://github.com/mauhlik/integrate-gopass/commit/45384673008c2dc9237a20b08aeca3f552d60ee7))
+
 ## [1.2.0](https://github.com/mauhlik/integrate-gopass/compare/v1.1.0...v1.2.0) (2025-04-30)
 
 
